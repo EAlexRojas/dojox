@@ -348,6 +348,11 @@ define([
 			toNode.style.display = "";
 			this._fixViewState(toNode);
 			var toWidget = registry.byNode(toNode);
+			if (toWidget._inProgress) {
+				return;
+			} else {
+				toWidget._inProgress = true;
+			}
 			if(toWidget){
 				// Now that the target view became visible, it's time to run resize()
 				if(config["mblAlwaysResizeOnTransition"] || !toWidget._resized){
@@ -539,6 +544,8 @@ define([
 			}
 			if(isOut){
 				this.invokeCallback();
+			} else {
+				this._inProgress = false;
 			}
 			this._clearClasses(this.domNode);
 
